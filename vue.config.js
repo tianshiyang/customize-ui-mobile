@@ -9,6 +9,7 @@ module.exports = {
       filename: "index.html"
     }
   },
+  outputDir: "lib",
   // 扩展 webpack配置
   chainWebpack: (config) => {
     config.resolve.alias

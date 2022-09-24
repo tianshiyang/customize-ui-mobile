@@ -4,7 +4,10 @@ import router from './router'
 import store from './store'
 import { Button } from "vant"
 import 'vant/lib/index.css'
-import testComponents from "../packages"
+
+// common.js引入格式
+import "../lib/index.css"
+const testComponents = require("../lib/index.common.js").default
 
 createApp(App)
   .use(store)

@@ -5,8 +5,8 @@ import vue from "rollup-plugin-vue" // 解析vue
 import babel from "@rollup/plugin-babel"
 import scss from "rollup-plugin-scss" // 解析scss
 import { writeFileSync, existsSync, mkdirSync } from "fs"
+import tsConfig from "../tsconfig.json"
 
-const extensions = [".js", ".ts", ".vue"]
 export default {
   input: "packages/index.ts",
   output: [
@@ -18,7 +18,6 @@ export default {
       }
     }
   ],
-  extensions,
   plugins: [ // 顺序很重要
     scss({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,15 +35,24 @@ export default {
     resolve({
       jsnext: true,
       main: true,
-      browser: true,
-      extensions
+      browser: true
     }),
     cjs(),
-    typescript(),
+    typescript({
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: true
+        },
+        include: tsConfig.include,
+        exclude: tsConfig.exclude
+      },
+      abortOnError: false
+    }),
     babel({
       exclude: 'node_modules/**', // 只转译我们的源代码
       runtimeHelpers: true
     })
   ],
+  // 指出应将哪些模块视为外部模块
   external: ["vue", "vant"]
 }
